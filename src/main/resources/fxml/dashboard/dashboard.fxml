@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="ma.bankdirect.controller.dashboard.DashboardController"
+      prefWidth="1120.0" prefHeight="720.0" style="-fx-background-color: #f8fafc;">
+
+    <!-- ================================================================= -->
+    <!-- 1. BARRE LATÉRALE GAUCHE (SIDEBAR BLEU BMCE DIRECT)                -->
+    <!-- ================================================================= -->
+    <VBox prefWidth="250.0" minWidth="250.0" spacing="20.0"
+          style="-fx-background-color: #083E78; -fx-padding: 25 18 20 18;">
+
+        <!-- Logo / Titre de la banque -->
+        <VBox spacing="4.0">
+            <Label text="Nejoui DIRECT" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white; -fx-letter-spacing: 1px;"/>
+            <Label text="BANK OF AFRICA" style="-fx-font-size: 11px; -fx-text-fill: #93c5fd; -fx-font-weight: bold;"/>
+        </VBox>
+
+        <!-- Séparateur discret -->
+        <Region style="-fx-background-color: #123E69; -fx-pref-height: 1;"/>
+
+        <!-- Menu de Navigation Vertical -->
+        <VBox spacing="8.0" VBox.vgrow="ALWAYS">
+            <!-- Onglet 1 : Accueil (Actif) -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0"
+                  style="-fx-background-color: #123E69; -fx-background-radius: 8; -fx-padding: 10 14; -fx-cursor: hand;">
+                <Label text="🏠" style="-fx-font-size: 16px;"/>
+                <Label text="Accueil" style="-fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <!-- Onglet 2 : Ma situation -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" onMouseClicked="#onSituationClicked"
+                  style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-padding: 10 14; -fx-cursor: hand;">
+                <Label text="📊" style="-fx-font-size: 16px;"/>
+                <Label text="Ma situation" style="-fx-text-fill: #bfdbfe; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Onglet 3 : Transactions & Virements -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" onMouseClicked="#onTransactionsClicked"
+                  style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-padding: 10 14; -fx-cursor: hand;">
+                <Label text="⇄" style="-fx-font-size: 16px;"/>
+                <Label text="Transactions" style="-fx-text-fill: #bfdbfe; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Onglet 4 : Mes produits -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" onMouseClicked="#onProductsClicked"
+                  style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-padding: 10 14; -fx-cursor: hand;">
+                <Label text="🛍️" style="-fx-font-size: 16px;"/>
+                <Label text="Mes produits" style="-fx-text-fill: #bfdbfe; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Onglet 5 : Menu / Paramètres -->
+            <HBox alignment="CENTER_LEFT" spacing="12.0" onMouseClicked="#onMenuClicked"
+                  style="-fx-background-color: transparent; -fx-background-radius: 8; -fx-padding: 10 14; -fx-cursor: hand;">
+                <Label text="⚙" style="-fx-font-size: 16px;"/>
+                <Label text="Paramètres" style="-fx-text-fill: #bfdbfe; -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- Espaceur flexible poussant le bloc conseiller vers le bas -->
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <!-- Bloc Mon Conseiller & Live Chat -->
+            <VBox spacing="10.0" style="-fx-background-color: #123E69; -fx-background-radius: 12; -fx-padding: 12;">
+                <HBox alignment="CENTER_LEFT" spacing="8.0" onMouseClicked="#onAdvisorClicked" style="-fx-cursor: hand;">
+                    <Label text="👤" style="-fx-font-size: 16px;"/>
+                    <VBox spacing="2.0">
+                        <Label text="Mon conseiller" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+                        <Label fx:id="advisorNameLabel" text="Mme Malika Ezzakri" style="-fx-font-size: 10px; -fx-text-fill: #bae6fd;"/>
+                    </VBox>
+                </HBox>
+
+                <Button text="💬 Démarrer Live chat" onAction="#onLiveChatClicked" maxWidth="Infinity"
+                        style="-fx-background-color: #00AEB6; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 11px; -fx-background-radius: 6; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- Bouton Déconnexion -->
+            <Button text="⏻ Se déconnecter" onAction="#onLogout" maxWidth="Infinity"
+                    style="-fx-background-color: #dc2626; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12px; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8;"/>
+        </VBox>
+    </VBox>
+
+    <!-- ================================================================= -->
+    <!-- 2. CONTENU PRINCIPAL (ZONE DROITE DÉFILABLE)                      -->
+    <!-- ================================================================= -->
+    <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS"
+                style="-fx-background-color: transparent; -fx-background: #f8fafc;">
+        <content>
+            <VBox spacing="25.0" style="-fx-padding: 30 35 30 35;">
+
+                <!-- En-tête de bienvenue -->
+                <HBox alignment="CENTER_LEFT">
+                    <VBox spacing="3.0">
+                        <Label text="Tableau de bord" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+                        <Label text="Bienvenue sur votre espace bancaire sécurisé" style="-fx-font-size: 13px; -fx-text-fill: #64748b;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- ============================================================= -->
+                <!-- CARTES BANCAIRES CÔTE À CÔTE (HBOX)                           -->
+                <!-- ============================================================= -->
+                <HBox spacing="20.0">
+
+                    <!-- CARTE 1 : Compte Chèque Particulier (Style BMCE Direct avec opérations) -->
+                    <VBox spacing="12.0" HBox.hgrow="ALWAYS"
+                          style="-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-radius: 14; -fx-background-radius: 14; -fx-padding: 20;">
+                        
+                        <!-- Haut de la carte -->
+                        <HBox alignment="CENTER_LEFT">
+                            <VBox spacing="2.0">
+                                <Label text="Compte Chèque Particulier" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+                                <Label fx:id="currentRibLabel" text="0117 ... 1234" style="-fx-font-size: 12px; -fx-text-fill: #64748b;"/>
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="currentBalanceLabel" text="24 500,00 MAD"
+                                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #083E78;"/>
+                        </HBox>
+
+                        <Region style="-fx-background-color: #f1f5f9; -fx-pref-height: 1;"/>
+
+                        <!-- 3 Opérations intégrées -->
+                        <Label text="DERNIÈRES OPÉRATIONS" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94a3b8;"/>
+                        <VBox spacing="10.0">
+                            <!-- Op 1 -->
+                            <HBox alignment="CENTER_LEFT">
+                                <Label fx:id="opDate1" text="19/11" style="-fx-font-size: 12px; -fx-text-fill: #64748b; -fx-min-width: 45;"/>
+                                <Label fx:id="opLabel1" text="Virement Vers Bénéficiaire..." style="-fx-font-size: 12px; -fx-text-fill: #334155;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="opAmount1" text="- 500,00 MAD" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #059669;"/>
+                            </HBox>
+                            <!-- Op 2 -->
+                            <HBox alignment="CENTER_LEFT">
+                                <Label fx:id="opDate2" text="19/11" style="-fx-font-size: 12px; -fx-text-fill: #64748b; -fx-min-width: 45;"/>
+                                <Label fx:id="opLabel2" text="Virement Vers Bénéficiaire..." style="-fx-font-size: 12px; -fx-text-fill: #334155;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="opAmount2" text="- 1 200,00 MAD" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #059669;"/>
+                            </HBox>
+                            <!-- Op 3 -->
+                            <HBox alignment="CENTER_LEFT">
+                                <Label fx:id="opDate3" text="18/11" style="-fx-font-size: 12px; -fx-text-fill: #64748b; -fx-min-width: 45;"/>
+                                <Label fx:id="opLabel3" text="Paiement Par Carte 47791..." style="-fx-font-size: 12px; -fx-text-fill: #334155;"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Label fx:id="opAmount3" text="- 350,00 MAD" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #059669;"/>
+                            </HBox>
+                        </VBox>
+                    </VBox>
+
+                    <!-- CARTE 2 : Compte Épargne & Raccourcis rapides -->
+                    <VBox spacing="14.0" prefWidth="340.0"
+                          style="-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-radius: 14; -fx-background-radius: 14; -fx-padding: 20;">
+                        <HBox alignment="CENTER_LEFT">
+                            <VBox spacing="2.0">
+                                <Label text="Compte Sur Carnet" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+                                <Label text="Épargne sécurisée" style="-fx-font-size: 11px; -fx-text-fill: #64748b;"/>
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label text="ACTIF" style="-fx-font-size: 10px; -fx-background-color: #dbeafe; -fx-text-fill: #1d4ed8; -fx-padding: 3 8; -fx-background-radius: 4;"/>
+                        </HBox>
+
+                        <Label text="120 000,00 MAD" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #166534;"/>
+                        <Label text="RIB : 0117 ... 9876" style="-fx-font-size: 11px; -fx-text-fill: #94a3b8;"/>
+
+                        <Region style="-fx-background-color: #f1f5f9; -fx-pref-height: 1;"/>
+
+                        <!-- Boutons d'actions rapides -->
+                        <Label text="ACTIONS RAPIDES" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94a3b8;"/>
+                        <HBox spacing="10.0">
+                            <Button text="💳 Virement" onAction="#onTransactionsClicked" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                                    style="-fx-background-color: #083E78; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8;"/>
+                            <Button text="📄 Relevé" onAction="#onSituationClicked" HBox.hgrow="ALWAYS" maxWidth="Infinity"
+                                    style="-fx-background-color: #f1f5f9; -fx-text-fill: #163C5A; -fx-background-radius: 6; -fx-cursor: hand; -fx-padding: 8;"/>
+                        </HBox>
+                    </VBox>
+
+                </HBox>
+
+                <!-- ============================================================= -->
+                <!-- SECTION "MON ACTUALITÉ" (DEUX CARTES CÔTE À CÔTE)              -->
+                <!-- ============================================================= -->
+                <VBox spacing="12.0">
+                    <Label text="Mon actualité" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #0f172a;"/>
+
+                    <HBox spacing="20.0">
+                        <!-- Carte 1 : Offre Voyage -->
+                        <VBox spacing="8.0" HBox.hgrow="ALWAYS"
+                              style="-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 18;">
+                            <Label text="-20% sur le prix de votre assistance voyage !"
+                                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #083E78;"/>
+                            <Label text="Jusqu'au 31 Décembre, bénéficiez de 20% de réduction pour toute souscription sur Nejoui Direct à nos offres d'assistance voyage Monde et Gold (Schengen et monde entier)! RDV sur Nejoui Direct : « Mes Produits »."
+                                   wrapText="true" style="-fx-font-size: 12px; -fx-text-fill: #475569; -fx-line-spacing: 2;"/>
+                        </VBox>
+
+                        <!-- Carte 2 : Sécurité Fraude -->
+                        <VBox spacing="8.0" HBox.hgrow="ALWAYS"
+                              style="-fx-background-color: white; -fx-border-color: #e2e8f0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-padding: 18;">
+                            <Label text="Restez vigilant !"
+                                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #083E78;"/>
+                            <Label text="N'installez jamais une application à partir d'un lien reçu par sms, WhatsApp, email ou réseaux sociaux. Votre banque ne vous demandera jamais vos codes confidentiels. En cas de doute contactez votre agence."
+                                   wrapText="true" style="-fx-font-size: 12px; -fx-text-fill: #475569; -fx-line-spacing: 2;"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </content>
+    </ScrollPane>
+
+</HBox>

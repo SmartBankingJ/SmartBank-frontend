@@ -26,12 +26,26 @@ public class App extends Application {
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("/com/bankapp/" + fxml + ".fxml"));
+    public static Parent loadFXML(String fxmlPath) throws IOException {
+        String path = fxmlPath.endsWith(".fxml") ? fxmlPath : fxmlPath + ".fxml";
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+        var resource = App.class.getResource(path);
+        if (resource == null) {
+            resource = App.class.getResource("/com/bankapp" + path);
+        }
+        if (resource == null) {
+            resource = App.class.getResource("/fxml" + path);
+        }
+        if (resource == null) {
+            throw new IOException("FXML introuvable : " + path);
+        }
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
         return fxmlLoader.load();
     }
 
