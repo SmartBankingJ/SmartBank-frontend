@@ -1,0 +1,447 @@
+.dashboard-root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #F4F8FB;
+}
+
+.sidebar {
+    -fx-background-color: #083E78;
+    -fx-padding: 24 16 18 16;
+}
+
+.brand-block {
+    -fx-padding: 4 2 8 2;
+}
+
+.brand-mark {
+    -fx-background-color: rgba(255,255,255,0.14);
+    -fx-background-radius: 13;
+}
+
+.brand-mark-letter {
+    -fx-text-fill: white;
+    -fx-font-size: 23px;
+    -fx-font-weight: 800;
+}
+
+.brand-name {
+    -fx-text-fill: white;
+    -fx-font-size: 17px;
+    -fx-font-weight: 800;
+}
+
+.brand-caption {
+    -fx-text-fill: #B6EDEF;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-heading {
+    -fx-text-fill: #9BB8D1;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 4 10 2 10;
+}
+
+.nav-button,
+.nav-button-active {
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 10;
+    -fx-font-size: 13px;
+    -fx-padding: 12 13;
+    -fx-cursor: hand;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D5E4F0;
+}
+
+.nav-button:hover {
+    -fx-background-color: #123E69;
+    -fx-text-fill: white;
+}
+
+.nav-button-active {
+    -fx-background-color: #00AEB6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.nav-button:focused,
+.nav-button-active:focused {
+    -fx-border-color: #B6EDEF;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+}
+
+.nav-button-active:hover {
+    -fx-background-color: #006B79;
+}
+
+.sidebar-bottom {
+    -fx-padding: 10 0 0 0;
+}
+
+.advisor-card {
+    -fx-background-color: #123E69;
+    -fx-background-radius: 12;
+    -fx-padding: 13;
+    -fx-cursor: hand;
+}
+
+.advisor-heading {
+    -fx-text-fill: #9BB8D1;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 2 0;
+}
+
+.advisor-avatar {
+    -fx-background-color: rgba(0,174,182,0.28);
+    -fx-background-radius: 17;
+}
+
+.advisor-avatar-letter {
+    -fx-text-fill: #B6EDEF;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.advisor-name {
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.advisor-caption {
+    -fx-text-fill: #B6EDEF;
+    -fx-font-size: 10px;
+}
+
+.chat-button {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-text-fill: #007F8D;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 10;
+    -fx-cursor: hand;
+}
+
+.chat-button:hover {
+    -fx-background-color: #DDF7F8;
+}
+
+.logout-button {
+    -fx-background-color: rgba(255,255,255,0.10);
+    -fx-background-radius: 9;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 11 12;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: #123E69;
+}
+
+.dashboard-scroll,
+.dashboard-scroll > .viewport {
+    -fx-background-color: #F4F8FB;
+    -fx-border-color: transparent;
+}
+
+.dashboard-content {
+    -fx-padding: 30 34 34 34;
+}
+
+.eyebrow {
+    -fx-text-fill: #007F8D;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+}
+
+.page-title {
+    -fx-text-fill: #083E78;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.page-subtitle {
+    -fx-text-fill: #163C5A;
+    -fx-font-size: 13px;
+}
+
+.language-chip {
+    -fx-min-width: 42px;
+    -fx-min-height: 38px;
+    -fx-background-color: #00AEB6;
+    -fx-background-radius: 20;
+}
+
+.language-text {
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.account-card-primary,
+.account-card-secondary,
+.activity-panel,
+.info-panel {
+    -fx-background-color: white;
+    -fx-border-color: #DFEAF1;
+    -fx-border-width: 1px;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+}
+
+.account-card-primary,
+.account-card-secondary {
+    -fx-padding: 21;
+}
+
+.account-card-primary {
+    -fx-background-color: #083E78;
+    -fx-border-color: transparent;
+}
+
+.account-icon-light,
+.account-icon-teal {
+    -fx-background-radius: 12;
+}
+
+.account-icon-light {
+    -fx-background-color: rgba(255,255,255,0.14);
+}
+
+.account-icon-teal {
+    -fx-background-color: #E1F7F8;
+}
+
+.account-icon-glyph {
+    -fx-text-fill: white;
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+}
+
+.account-icon-glyph-teal {
+    -fx-text-fill: #007F8D;
+    -fx-font-size: 21px;
+    -fx-font-weight: bold;
+}
+
+.account-kicker-light,
+.balance-caption-light,
+.rib-caption-light {
+    -fx-text-fill: #B6EDEF;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+}
+
+.account-title-light {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+.status-pill-light,
+.status-pill-teal {
+    -fx-background-radius: 12;
+    -fx-padding: 5 9;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+}
+
+.status-pill-light {
+    -fx-background-color: rgba(255,255,255,0.16);
+    -fx-text-fill: white;
+}
+
+.status-pill-teal {
+    -fx-background-color: #E1F7F8;
+    -fx-text-fill: #007F8D;
+}
+
+.balance-caption-light {
+    -fx-font-size: 9px;
+}
+
+.balance-value-light {
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.rib-value-light {
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-padding: 0 0 0 6;
+}
+
+.text-button-light,
+.text-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #007F8D;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.text-button-light {
+    -fx-text-fill: white;
+}
+
+.text-button:hover {
+    -fx-text-fill: #006B79;
+    -fx-underline: true;
+}
+
+.text-button-light:hover {
+    -fx-text-fill: #B6EDEF;
+    -fx-underline: true;
+}
+
+.account-kicker {
+    -fx-text-fill: #007F8D;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+}
+
+.account-title {
+    -fx-text-fill: #123E69;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.balance-value {
+    -fx-text-fill: #083E78;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.rib-caption {
+    -fx-text-fill: #163C5A;
+    -fx-font-size: 10px;
+}
+
+.primary-action {
+    -fx-background-color: #007F8D;
+    -fx-background-radius: 9;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 12;
+    -fx-cursor: hand;
+}
+
+.primary-action:hover {
+    -fx-background-color: #006B79;
+}
+
+.section-title {
+    -fx-text-fill: #083E78;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+.activity-panel {
+    -fx-padding: 0 18 4 18;
+}
+
+.activity-header {
+    -fx-padding: 16 2 12 2;
+    -fx-border-color: transparent transparent #E6EEF3 transparent;
+}
+
+.table-heading {
+    -fx-text-fill: #123E69;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+}
+
+.muted-caption {
+    -fx-text-fill: #7D91A3;
+    -fx-font-size: 10px;
+}
+
+.activity-row {
+    -fx-padding: 12 2;
+    -fx-border-color: transparent transparent #EAF0F4 transparent;
+}
+
+.activity-row-last {
+    -fx-padding: 12 2;
+    -fx-border-color: transparent;
+}
+
+.transaction-icon,
+.transaction-icon-card {
+    -fx-background-color: #E1F7F8;
+    -fx-background-radius: 11;
+}
+
+.transaction-icon-card {
+    -fx-background-color: #EAF1F7;
+}
+
+.transaction-icon-glyph {
+    -fx-text-fill: #007F8D;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+.transaction-title {
+    -fx-text-fill: #163C5A;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.transaction-date {
+    -fx-text-fill: #7D91A3;
+    -fx-font-size: 10px;
+}
+
+.transaction-amount {
+    -fx-text-fill: #007F8D;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.info-panel {
+    -fx-padding: 16;
+}
+
+.info-title {
+    -fx-text-fill: #123E69;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.count-badge,
+.notification-badge {
+    -fx-background-color: #E1F7F8;
+    -fx-background-radius: 12;
+    -fx-text-fill: #007F8D;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 4 8;
+}
+
+.info-description {
+    -fx-text-fill: #163C5A;
+    -fx-font-size: 10px;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 9px;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #B9D5E2;
+    -fx-background-radius: 8;
+}
