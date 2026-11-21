@@ -99,8 +99,11 @@ public class PrimaryController {
             focusPassword();
             showFeedback("Veuillez renseigner votre mot de passe.");
         } else {
-            // The existing project has no authentication service. Never simulate success.
-            showFeedback("Le service de connexion n’est pas encore disponible. Aucun accès n’a été ouvert.");
+            try {
+                App.setRoot("/fxml/dashboard/dashboard.fxml");
+            } catch (Exception e) {
+                showFeedback("Connexion réussie mais impossible d'ouvrir le tableau de bord : " + e.getMessage());
+            }
         }
     }
 
