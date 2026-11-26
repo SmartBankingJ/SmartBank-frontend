@@ -8,9 +8,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.*;
+import ma.bankdirect.api.AuthApi;
+import ma.bankdirect.auth.Async;
+import ma.bankdirect.auth.AuthDialogs;
+import ma.bankdirect.session.SessionManager;
 
 /** Desktop sign-in presentation. No access is granted without an authentication service. */
 public class PrimaryController {
+    private final javafx.beans.property.BooleanProperty busy = new javafx.beans.property.SimpleBooleanProperty(false);
     @FXML private StackPane root;
     @FXML private VBox loginCard;
     @FXML private Circle outerRing;
@@ -33,8 +38,8 @@ public class PrimaryController {
         root.setClip(viewport);
         visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
         loginButton.disableProperty().bind(Bindings.createBooleanBinding(
-                () -> usernameField.getText().isBlank() || passwordField.getText().isEmpty(),
-                usernameField.textProperty(), passwordField.textProperty()));
+                () -> busy.get() || usernameField.getText().isBlank() || passwordField.getText().isEmpty(),
+                usernameField.textProperty(), passwordField.textProperty(), busy));
         usernameField.textProperty().addListener((observable, oldValue, newValue) -> clearFeedback());
         passwordField.textProperty().addListener((observable, oldValue, newValue) -> clearFeedback());
         for (TextField field : new TextField[] { usernameField, passwordField, visiblePasswordField }) {
@@ -92,6 +97,7 @@ public class PrimaryController {
 
     @FXML
     private void submitLogin() {
+        if (busy.get()) return;
         if (usernameField.getText().isBlank()) {
             usernameField.requestFocus();
             showFeedback("Veuillez renseigner votre identifiant.");
@@ -99,12 +105,37 @@ public class PrimaryController {
             focusPassword();
             showFeedback("Veuillez renseigner votre mot de passe.");
         } else {
-            try {
-                App.setRoot("/fxml/dashboard/dashboard.fxml");
-            } catch (Exception e) {
-                showFeedback("Connexion réussie mais impossible d'ouvrir le tableau de bord : " + e.getMessage());
-            }
+            String username = usernameField.getText().trim(), password = passwordField.getText();
+            busy.set(true); loginButton.setText("Connexion en cours…");
+            usernameField.setDisable(true); passwordField.setDisable(true); visiblePasswordField.setDisable(true);
+            Async.run(() -> AuthApi.INSTANCE.login(username, password), result -> {
+                finishRequest(); passwordField.clear();
+                if (root.getScene().getRoot() != root) {
+                    Async.run(() -> { AuthApi.INSTANCE.logout(result.token()); return null; }, unused -> {}, error -> {});
+                    return;
+                }
+                if (result.mustChangePassword()) {
+                    showFeedback("Définissez un nouveau mot de passe pour terminer votre première connexion.");
+                    AuthDialogs.change(root.getScene().getWindow(), result.token(), true, this::openAuthenticatedDashboard);
+                } else openAuthenticatedDashboard(result);
+            }, error -> { finishRequest(); passwordField.clear(); showFeedback(error instanceof AuthApi.Failure ? error.getMessage() : "Impossible de terminer la connexion."); });
         }
+    }
+
+    private void finishRequest() {
+        busy.set(false); loginButton.setText("Se connecter");
+        usernameField.setDisable(false); passwordField.setDisable(false); visiblePasswordField.setDisable(false);
+    }
+
+    private void openAuthenticatedDashboard(AuthApi.Result result) {
+        if (!"CUSTOMER".equals(result.user().getRole()) || result.customer() == null) {
+            Async.run(() -> { AuthApi.INSTANCE.logout(result.token()); return null; }, unused -> {}, error -> {});
+            showFeedback("Votre rôle ne dispose pas encore d’un espace desktop. Contactez l’administrateur.");
+            return;
+        }
+        SessionManager.get().start(result.token(), result.user(), result.customer());
+        try { App.setRoot("/fxml/dashboard/dashboard.fxml"); }
+        catch (Exception e) { App.logout("Impossible d’ouvrir le tableau de bord. Reconnectez-vous."); }
     }
 
     private void showFeedback(String message) {
@@ -122,11 +153,7 @@ public class PrimaryController {
 
     @FXML
     private void showAccessHelp() {
-        showInformation("Aide à la connexion", "Vous ne parvenez pas à vous connecter ?",
-                "Vérifiez votre identifiant et la touche de verrouillage des majuscules.\n\n"
-                + "Si vous avez oublié vos accès, contactez l’administrateur de votre espace SmartBanking. "
-                + "La récupération automatique des accès n’est pas encore disponible.\n\n"
-                + "Ne communiquez jamais votre mot de passe à une autre personne.");
+        if (!busy.get()) AuthDialogs.recover(root.getScene().getWindow(), usernameField.getText());
     }
 
     @FXML

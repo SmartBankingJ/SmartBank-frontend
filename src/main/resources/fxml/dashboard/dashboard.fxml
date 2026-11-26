@@ -64,7 +64,7 @@
                         <VBox spacing="5.0">
                             <Label text="MON ESPACE CLIENT" styleClass="eyebrow"/>
                             <Label text="Tableau de bord" styleClass="page-title"/>
-                            <Label text="Bienvenue dans votre espace bancaire." styleClass="page-subtitle"/>
+                            <Label text="Session authentifiée · Soldes et opérations de démonstration" styleClass="page-subtitle"/>
                         </VBox>
                         <Region HBox.hgrow="ALWAYS"/>
                         <HBox alignment="CENTER" spacing="8.0" styleClass="language-chip">

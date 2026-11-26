@@ -57,13 +57,8 @@ public class DashboardController {
      * Charge le compte et le solde du client connecté.
      */
     private void loadAccountData() {
-        Customer customer;
-        if (SessionManager.get().isLoggedIn()) {
-            customer = SessionManager.get().currentCustomer();
-        } else {
-            // Profil par défaut pour le test
-            customer = new Customer(1L, "Karim", "Bennani", "BK654321", "karim@email.ma", "+212 600-000000", "Casablanca", null);
-        }
+        Customer customer = SessionManager.get().currentCustomer();
+        if (customer == null) throw new IllegalStateException("Le tableau de bord client nécessite un profil client");
 
         // Compte Chèque Particulier
         Account account = new Account(1L, customer.getId(), "011780000012345678901234", AccountType.CURRENT, "MAD",
@@ -103,12 +98,7 @@ public class DashboardController {
 
     @FXML
     private void onLogout() {
-        SessionManager.get().clear();
-        try {
-            ma.bankdirect.App.setRoot("primary");
-        } catch (Exception e) {
-            showMessage("Déconnexion", "Vous avez été déconnecté avec succès.");
-        }
+        ma.bankdirect.App.logout(null);
     }
 
     @FXML
@@ -138,7 +128,9 @@ public class DashboardController {
 
     @FXML
     private void onMenuClicked() {
-        showMessage("Navigation", "Ouverture du menu général des paramètres.");
+        String token = SessionManager.get().token();
+        ma.bankdirect.auth.AuthDialogs.change(advisorNameLabel.getScene().getWindow(), token, false, result ->
+                SessionManager.get().start(result.token(), result.user(), result.customer()));
     }
 
     private void showMessage(String title, String content) {
