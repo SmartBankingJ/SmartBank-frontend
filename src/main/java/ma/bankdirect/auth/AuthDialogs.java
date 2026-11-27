@@ -18,10 +18,20 @@ public final class AuthDialogs {
         ((Button)dialog.getDialogPane().lookupButton(ButtonType.CANCEL)).setText("Fermer");
         dialog.getDialogPane().getStyleClass().add("auth-dialog");
         dialog.getDialogPane().getStylesheets().add(App.class.getResource("/com/bankapp/auth.css").toExternalForm());
-        dialog.getDialogPane().setPrefWidth(480);return dialog;
+        dialog.getDialogPane().setPrefWidth(560);return dialog;
     }
     private static VBox content(){VBox box=new VBox(12);box.setPadding(new Insets(16));return box;}
-    private static Label feedback(){Label label=new Label();label.setWrapText(true);label.setMaxWidth(400);label.setStyle("-fx-text-fill:#A52D37;");return label;}
+    private static Label feedback(){Label label=new Label();label.setWrapText(true);label.setMaxWidth(480);label.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);label.setStyle("-fx-text-fill:#A52D37;");return label;}
+    private static void recoveryContent(Dialog<Void> dialog,VBox box) {
+        for(var child:box.getChildren())if(child instanceof Label label) {
+            label.setWrapText(true);label.setMaxWidth(480);label.setPrefWidth(480);
+            label.setMinHeight(javafx.scene.layout.Region.USE_PREF_SIZE);
+        }
+        ScrollPane scroll=new ScrollPane(box);scroll.setFitToWidth(true);
+        scroll.setStyle("-fx-background-color:white;-fx-background:white;-fx-border-color:transparent;");
+        scroll.setPrefViewportHeight(Math.min(590,javafx.stage.Screen.getPrimary().getVisualBounds().getHeight()-180));
+        dialog.getDialogPane().setContent(scroll);
+    }
     private static PasswordField password(String hint){PasswordField field=new PasswordField();field.setPromptText(hint);field.setMaxWidth(Double.MAX_VALUE);return field;}
     private static Button primary(String text){Button button=new Button(text);button.getStyleClass().add("login-button");button.setMaxWidth(Double.MAX_VALUE);button.setDefaultButton(true);return button;}
     private static void message(Label target,Throwable error){target.setText(error instanceof AuthApi.Failure?error.getMessage():"Une erreur est survenue. Réessayez.");}
@@ -65,24 +75,24 @@ public final class AuthDialogs {
         Label feedback=feedback();Button send=primary("Recevoir les instructions");
         Label instruction=new Label("Si un compte correspond, des instructions de récupération seront transmises.");instruction.setWrapText(true);
         box.getChildren().addAll(title,instruction,new Label("Identifiant"),username,feedback,send);
-        dialog.getDialogPane().setContent(box);
+        recoveryContent(dialog,box);
         send.setOnAction(event->{
             if(username.getText().isBlank()){feedback.setText("Renseignez votre identifiant.");return;}
             String name=username.getText().trim();send.setDisable(true);feedback.setText("Demande en cours…");
-            Async.run(()->{API.forgot(name);return null;},unused->resetStep(dialog,name),error->{send.setDisable(false);message(feedback,error);});
+            Async.run(()->API.forgot(name),mode->resetStep(dialog,name,mode),error->{send.setDisable(false);message(feedback,error);});
         });dialog.show();
     }
-    private static void resetStep(Dialog<Void> dialog,String username) {
+    private static void resetStep(Dialog<Void> dialog,String username,String mode) {
         if(!dialog.isShowing())return;
         VBox box=content();Label title=new Label("Nouveau mot de passe");title.getStyleClass().add("card-title");
         Label instruction=new Label("Si un compte correspond, utilisez le code reçu pour définir un nouveau mot de passe. Le code expire après 15 minutes.");instruction.setWrapText(true);
-        Label simulation=new Label("Développement : le code est remis dans la boîte locale de l’administrateur ; aucun e-mail n’est envoyé.");simulation.setWrapText(true);simulation.setStyle("-fx-text-fill:#007F8D;");
+        Label simulation=new Label("email".equals(mode)?"Si le compte possède une adresse e-mail valide, le code est envoyé à cette adresse. Consultez aussi les courriers indésirables.":"Mode de test local : le code est déposé dans la boîte locale de l’administrateur ; aucun e-mail n’est envoyé.");simulation.setWrapText(true);simulation.setStyle("-fx-text-fill:#007F8D;");
         TextField code=new TextField();code.setPromptText("Collez votre code de récupération");
         PasswordField replacement=password("12 à 128 caractères"),confirm=password("Confirmer le mot de passe");
         Label feedback=feedback();Button submit=primary("Réinitialiser mon mot de passe");
         Hyperlink resend=new Hyperlink("Renvoyer les instructions (une fois par minute)");
         box.getChildren().addAll(title,instruction,simulation,new Label("Code de récupération"),code,new Label("Nouveau mot de passe"),replacement,new Label("Confirmation"),confirm,feedback,submit,resend);
-        dialog.getDialogPane().setContent(box);dialog.getDialogPane().getScene().getWindow().sizeToScene();
+        recoveryContent(dialog,box);dialog.getDialogPane().getScene().getWindow().sizeToScene();
         submit.setOnAction(event->{
             if(code.getText().isBlank()){feedback.setText("Renseignez le code de récupération.");return;}
             if(!replacement.getText().equals(confirm.getText())){feedback.setText("Les mots de passe ne correspondent pas.");return;}

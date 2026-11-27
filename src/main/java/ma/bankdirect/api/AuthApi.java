@@ -32,7 +32,7 @@ public final class AuthApi {
     }
     public Result login(String username,String password){return result(send("POST","/auth/login",null,Map.of("username",username,"password",password)));}
     public Result changePassword(String token,String current,String replacement){return result(send("POST","/auth/change-password",token,Map.of("currentPassword",current,"newPassword",replacement)));}
-    public void forgot(String username){send("POST","/auth/forgot-password",null,Map.of("username",username));}
+    public String forgot(String username){JsonObject response=send("POST","/auth/forgot-password",null,Map.of("username",username));return response.has("delivery")?response.get("delivery").getAsString():"local";}
     public void reset(String code,String replacement){send("POST","/auth/reset-password",null,Map.of("code",code,"newPassword",replacement));}
     public void me(String token){send("GET","/auth/me",token,null);}
     public void logout(String token){if(token!=null)send("POST","/auth/logout",token,null);}
@@ -49,7 +49,7 @@ public final class AuthApi {
         return new Result(response.get("token").getAsString(),user,customer,identity.get("mustChangePassword").getAsBoolean());
     }
     private JsonObject send(String method,String path,String token,Object body) {
-        HttpRequest.Builder request=HttpRequest.newBuilder(URI.create(base+path)).timeout(Duration.ofSeconds(12)).header("Accept","application/json");
+        HttpRequest.Builder request=HttpRequest.newBuilder(URI.create(base+path)).timeout(Duration.ofSeconds(path.equals("/auth/forgot-password")?30:12)).header("Accept","application/json");
         if(token!=null)request.header("Authorization","Bearer "+token);
         if(method.equals("GET"))request.GET();
         else request.header("Content-Type","application/json").POST(HttpRequest.BodyPublishers.ofString(body==null?"{}":gson.toJson(body)));
