@@ -36,7 +36,7 @@ L’interface valide les identifiants auprès du backend HTTP. Le dashboard ne s
 4. Changer obligatoirement le mot de passe à la première connexion avant d’ouvrir le dashboard.
 5. Utiliser Paramètres pour le changer ultérieurement, ou « Je ne peux pas me connecter » pour la récupération.
 
-L’URL de l’API est `http://127.0.0.1:8081`, remplaçable par `SMARTBANK_API_URL` ou `-Dsmartbank.api.url`. Hors localhost, HTTPS est obligatoire. La récupération nécessite le canal local de développement activé dans le backend ; aucun e-mail réel n’est envoyé.
+L’URL de l’API est `http://127.0.0.1:8081`, remplaçable par `SMARTBANK_API_URL` ou `-Dsmartbank.api.url`. Hors localhost, HTTPS est obligatoire. La récupération utilise le canal configuré dans le backend : e-mail SMTP (`-EmailRecovery`) ou fichier local de test (`-LocalRecovery`). L’écran adapte ses instructions au champ `delivery` de la réponse API ; aucune adresse du client ni aucun secret SMTP n’est transmis au frontend. Voir le README backend pour la configuration et la recette de l’e-mail.
 
 `api/AuthApi` contient le client HTTP et le décodage des réponses publiques. `auth/Async` réalise les appels en arrière-plan, `auth/AuthDialogs` gère les formulaires de changement et récupération. `SessionManager` garde le jeton uniquement en mémoire. L’application observe l’activité et vérifie périodiquement la session active auprès du serveur ; inactivité ou révocation ramènent à la connexion. La fermeture ne garantit pas une révocation distante en cas de coupure : les délais backend restent applicables.
 
